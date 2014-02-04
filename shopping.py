@@ -1,8 +1,8 @@
 import web
+web.config.debug = False
 
 db = web.database(dbn='mysql', user='test', pw='test123', db='recipe_shopping')
 
-render = web.template.render('templates/')
 
 urls = (
     '/(\d*)', 'index',
@@ -10,6 +10,10 @@ urls = (
     '/login', 'login'
 )
 
+app = web.application(urls, locals())
+session = web.session.Session(app, web.session.DiskStore('sessions'))
+
+render = web.template.render('templates/', globals={'session': session})
 
 class index:
     def GET(self, user_id):
@@ -17,6 +21,7 @@ class index:
             where = "users.id = %s" % user_id
         else:
             where = None
+            raise web.seeother('/login')
         users = db.select('users', where=where)
         return render.index(users)
 
@@ -37,10 +42,10 @@ class login:
             web.SQLParam(credentials.password)])
         user = db.query(q)
         if len(user) > 0:
-            raise web.seeother('/' + str(user[0].id))
+            session['user_id'] = str(user[0].id)
+            raise web.seeother('/' + session.user_id)
         else:
             return render.login()
 
 if __name__ == "__main__":
-    app = web.application(urls, globals())
     app.run()
