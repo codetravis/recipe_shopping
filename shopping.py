@@ -14,17 +14,20 @@ urls = (
     '/login', 'login',
     '/logout', 'logout',
     '/register', 'register',
-    '/new_recipe', 'new_recipe'
+    '/new_recipe', 'new_recipe',
+    '/add_recipe', 'add_recipe'
 )
+
 
 # create application 
 app = web.application(urls, locals())
 # initialize session
 session = web.session.Session(app, web.session.DiskStore('sessions'))
 
+globals = {'hasattr': hasattr, 'session': session}
 # rendering ?
-render = web.template.render('templates/', base='base',globals={'session': session})
-render_plain = web.template.render('templates/', globals={'session': session})
+render = web.template.render('templates/', base='base',globals=globals)
+render_plain = web.template.render('templates/', globals=globals)
 
 # home page 
 class index:

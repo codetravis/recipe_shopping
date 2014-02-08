@@ -2,9 +2,9 @@ $def with (body)
 <!DOCTYPE html>
 <html>
 <head>
-    $if body.title:
+    $if hasattr(body, 'title'):
         <title>$body.title</title>
-    $if body.scripts:
+    $if hasattr(body, 'scripts'):
         $for script in body.scripts.split():
             <script type="text/javascript" src="$script"></script> 
 </head>
