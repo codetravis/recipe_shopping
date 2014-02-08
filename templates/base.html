@@ -2,9 +2,19 @@ $def with (body)
 <!DOCTYPE html>
 <html>
 <head>
+    $if body.title:
+        <title>$body.title</title>
+    $if body.scripts:
+        $for script in body.scripts.split():
+            <script type="text/javascript" src="$script"></script> 
 </head>
 <body>
 <div><a href="/logout">Logout</a></div>
+<div>
+    <p><a href="/new_recipe">Add Recipe</a></p>
+</div>
+<div class="body_wrapper">
 $:body
+</div>
 </body>
 </html>

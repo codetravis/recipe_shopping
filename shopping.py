@@ -28,7 +28,7 @@ render_plain = web.template.render('templates/', globals={'session': session})
 
 # home page 
 class index:
-    def GET(self, user_id):
+    def GET(self, userid):
         if hasattr(session, 'user_id'):
             where = "users.id = %s" % session.user_id
         else:
